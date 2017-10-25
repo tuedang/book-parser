@@ -11,7 +11,7 @@ public class MainApp {
 
     public static void main(String... args) throws Exception {
         EpubReader epubReader = new EpubReader();
-        Book book = epubReader.readEpub(new FileInputStream("/Users/tuedang/Downloads/RESTful_Web_Services.epub"));
+        Book book = epubReader.readEpub(new FileInputStream("/Users/tuedang/Downloads/microservices-antipatterns-and-pitfalls.epub"));
         BookStack bookStack = new BookStackProcessor(book).get();
         BookStackUtils.generateFolderHtml(bookStack, new File("/Data/NCT/"));
     }

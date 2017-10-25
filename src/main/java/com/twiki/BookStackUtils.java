@@ -29,7 +29,7 @@ public class BookStackUtils {
                 bfc.mkdirs();
                 for (Page page : chapter.getPages()) {
                     FileUtils.writeStringToFile(
-                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page), page.getTitle())),
+                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page), page.getTitle().replace("/","_"))),
                             page.getHtmlContent());
                 }
             }

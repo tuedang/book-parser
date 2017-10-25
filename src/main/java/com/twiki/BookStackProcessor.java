@@ -62,6 +62,10 @@ public class BookStackProcessor {
         if (StringUtils.isNotEmpty(tocReference.getFragmentId())) {
             Element fragment = document.select(String.format("div.sect1:has(#%s)",
                     tocReference.getFragmentId())).first();
+            if (fragment == null) {
+                fragment = document.select(String.format("section:has(#%s)",
+                        tocReference.getFragmentId())).first();
+            }
             fragment.select("div.titlepage").remove();
 
             Elements elements = fragment.select("div.sect2");

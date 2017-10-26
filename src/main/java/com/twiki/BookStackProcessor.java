@@ -5,6 +5,7 @@ import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.Page;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.TOCReference;
+import nl.siegmann.epublib.util.CollectionUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +14,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookStackProcessor {
@@ -22,8 +22,8 @@ public class BookStackProcessor {
 
     public BookStackProcessor(Book book) {
         this.book = book;
-        this.bookStack = new BookStack();
         try {
+            this.bookStack = new BookStack(book.getTitle(), new String(book.getCoverPage().getData()));
             process();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -35,10 +35,6 @@ public class BookStackProcessor {
     }
 
     private BookStack process() throws IOException {
-        bookStack.setTitle(book.getTitle());
-        bookStack.setDescription(new String(book.getCoverPage().getData()));
-        bookStack.setChapters(new ArrayList<>());
-
         handle(0, book.getTableOfContents().getTocReferences());
         return bookStack;
 
@@ -62,7 +58,7 @@ public class BookStackProcessor {
         if (StringUtils.isNotEmpty(tocReference.getFragmentId())) {
             Element fragment = document.getElementById(tocReference.getFragmentId());
             fragment = closest(fragment, "div.sect1, section, body");
-//            fragment.select("div.titlepage").remove();
+            fragment.select("div.titlepage").remove();
             for (TOCReference toc : tocReference.getChildren()) {
                 Element f = fragment.getElementById(toc.getFragmentId());
                 if (f != null) f.remove();
@@ -86,18 +82,16 @@ public class BookStackProcessor {
 
         switch (level) {
             case 1:
-                Chapter chapter = new Chapter();
-                chapter.setTitle(tocReference.getTitle());
-                chapter.setDescription(htmlContent);
-                chapter.setPages(new ArrayList<>());
-                bookStack.getChapters().add(chapter);
+                if (CollectionUtil.isEmpty(tocReference.getChildren())) {
+                    bookStack.addPage(new Page(tocReference.getTitle(), htmlContent));
+                } else {
+                    bookStack.addChapter(new Chapter(tocReference.getTitle(), htmlContent));
+                }
                 break;
             case 2:
-                Page page = new Page();
-                page.setTitle(tocReference.getTitle());
-                page.setHtmlContent(htmlContent);
-                List<Chapter> chapters = bookStack.getChapters();
-                chapters.get(chapters.size() - 1).getPages().add(page);
+                Page page = new Page(tocReference.getTitle(), htmlContent);
+                bookStack.getLastChapter().addPage(page);
+                break;
         }
 
     }

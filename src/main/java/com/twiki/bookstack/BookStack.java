@@ -1,44 +1,40 @@
 package com.twiki.bookstack;
 
+import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BookStack {
-    private String title;
-    private String description;
+public class BookStack extends ContentEntity {
 
-    private Chapter primaryChapter;
+    private List<ContentEntity> contents;
 
-    private List<Chapter> chapters;
-
-    public String getTitle() {
-        return title;
+    public BookStack(String title, String htmlContent) {
+        super(title, htmlContent, true);
+        this.type = "book";
+        contents = new ArrayList<>();
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public BookStack addPage(Page page) {
+        contents.add(page);
+        return this;
     }
 
-    public String getDescription() {
-        return description;
+    public BookStack addChapter(Chapter chapter) {
+        contents.add(chapter);
+        return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public List<ContentEntity> getContents() {
+        return contents;
     }
 
-    public Chapter getPrimaryChapter() {
-        return primaryChapter;
+    @Transient
+    public Chapter getLastChapter() {
+        ContentEntity contentEntity = contents.get(contents.size() - 1);//.getPages().add(page);
+        if(!(contentEntity instanceof Chapter)) {
+            throw new RuntimeException("Wrong content type");
+        }
+        return (Chapter) contentEntity;
     }
 
-    public void setPrimaryChapter(Chapter primaryChapter) {
-        this.primaryChapter = primaryChapter;
-    }
-
-    public List<Chapter> getChapters() {
-        return chapters;
-    }
-
-    public void setChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
-    }
 }

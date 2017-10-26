@@ -1,5 +1,6 @@
 package com.twiki;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.twiki.bookstack.BookStack;
@@ -19,28 +20,28 @@ public class BookStackUtils {
         File bf = new File(baseFolder, escape(bookStack.getTitle()));
         bf.mkdirs();
 
-        for (Chapter chapter : bookStack.getChapters()) {
-            int chapterIndex = bookStack.getChapters().indexOf(chapter);
-
-            if (chapter.getPages().isEmpty()) {
-                FileUtils.writeStringToFile(
-                        new File(bf, String.format("%s__%s.html", chapterIndex, escape(chapter.getTitle()))),
-                        chapter.getDescription());
-            } else {
-                File bfc = new File(bf, String.format("%s__%s", chapterIndex, escape(chapter.getTitle())));
-                bfc.mkdirs();
-                //chapter description
-                FileUtils.writeStringToFile(
-                        new File(bfc, String.format("%s__%s.htm", 0, escape(chapter.getTitle()))),
-                        chapter.getDescription());
-                for (Page page : chapter.getPages()) {
-                    FileUtils.writeStringToFile(
-                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page) + 1, escape(page.getTitle()))),
-                            page.getHtmlContent());
-                }
-            }
-
-        }
+//        for (Chapter chapter : bookStack.getChapters()) {
+//            int chapterIndex = bookStack.getChapters().indexOf(chapter);
+//
+//            if (chapter.getPages().isEmpty()) {
+//                FileUtils.writeStringToFile(
+//                        new File(bf, String.format("%s__%s.html", chapterIndex, escape(chapter.getTitle()))),
+//                        chapter.getDescription());
+//            } else {
+//                File bfc = new File(bf, String.format("%s__%s", chapterIndex, escape(chapter.getTitle())));
+//                bfc.mkdirs();
+//                //chapter description
+//                FileUtils.writeStringToFile(
+//                        new File(bfc, String.format("%s__%s.htm", 0, escape(chapter.getTitle()))),
+//                        chapter.getDescription());
+//                for (Page page : chapter.getPages()) {
+//                    FileUtils.writeStringToFile(
+//                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page) + 1, escape(page.getTitle()))),
+//                            page.getHtmlContent());
+//                }
+//            }
+//
+//        }
     }
     private static String escape(String folder) {
         return folder
@@ -55,6 +56,7 @@ public class BookStackUtils {
         }
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.writeValue(new File(baseFolder, escape(bookStack.getTitle())+"-books.json"), bookStack);
     }
 

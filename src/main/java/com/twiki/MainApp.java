@@ -17,7 +17,8 @@ public class MainApp {
         for (File epub : epubs) {
             Book book = epubReader.readEpub(new FileInputStream(epub));
             BookStack bookStack = new BookStackProcessor(book).get();
-            BookStackUtils.generateFolderHtml(bookStack, new File("D:\\books\\books_html"));
+//            BookStackUtils.generateFolderHtml(bookStack, new File("D:\\books\\books_html"));
+            BookStackUtils.generateJson(bookStack, new File("D:\\books\\books_json"));
         }
     }
 }

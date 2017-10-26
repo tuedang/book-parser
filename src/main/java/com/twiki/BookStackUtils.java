@@ -1,5 +1,7 @@
 package com.twiki;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.Page;
@@ -46,4 +48,14 @@ public class BookStackUtils {
                 .replace("?", "")
                 .replace(":", "");
     }
+
+    public static void generateJson(BookStack bookStack, File baseFolder) throws IOException {
+        if (!baseFolder.exists()) {
+            throw new FileNotFoundException(baseFolder.getAbsolutePath());
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.writeValue(new File(baseFolder, escape(bookStack.getTitle())+"-books.json"), bookStack);
+    }
+
 }

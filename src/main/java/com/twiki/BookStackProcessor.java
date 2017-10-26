@@ -61,7 +61,7 @@ public class BookStackProcessor {
         String htmlContent;
         if (StringUtils.isNotEmpty(tocReference.getFragmentId())) {
             Element fragment = document.getElementById(tocReference.getFragmentId());
-            fragment = closest(fragment, "div.sect1, section");
+            fragment = closest(fragment, "div.sect1, section, body");
 //            fragment.select("div.titlepage").remove();
             for (TOCReference toc : tocReference.getChildren()) {
                 Element f = fragment.getElementById(toc.getFragmentId());

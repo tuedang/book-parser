@@ -14,7 +14,7 @@ public class BookStackUtils {
         if (!baseFolder.exists()) {
             throw new FileNotFoundException(baseFolder.getAbsolutePath());
         }
-        File bf = new File(baseFolder, bookStack.getTitle());
+        File bf = new File(baseFolder, escape(bookStack.getTitle()));
         bf.mkdirs();
 
         for (Chapter chapter : bookStack.getChapters()) {
@@ -29,7 +29,7 @@ public class BookStackUtils {
                 bfc.mkdirs();
                 //chapter description
                 FileUtils.writeStringToFile(
-                        new File(bfc, String.format("%s__%s.htm", 00, escape(chapter.getTitle()))),
+                        new File(bfc, String.format("%s__%s.htm", 0, escape(chapter.getTitle()))),
                         chapter.getDescription());
                 for (Page page : chapter.getPages()) {
                     FileUtils.writeStringToFile(

@@ -60,24 +60,23 @@ public class BookStackProcessor {
 
         String htmlContent;
         if (StringUtils.isNotEmpty(tocReference.getFragmentId())) {
-            Element fragment = document.select(String.format("div.sect1:has(#%s)",
-                    tocReference.getFragmentId())).first();
-            if (fragment == null) {
-                fragment = document.select(String.format("section:has(#%s)",
-                        tocReference.getFragmentId())).first();
+            Element fragment = document.getElementById(tocReference.getFragmentId());
+            fragment = closest(fragment, "div.sect1, section");
+//            fragment.select("div.titlepage").remove();
+            for (TOCReference toc : tocReference.getChildren()) {
+                Element f = fragment.getElementById(toc.getFragmentId());
+                if (f != null) f.remove();
             }
-            fragment.select("div.titlepage").remove();
 
+            //transform sect2 to h2 (match with bookstack
             Elements elements = fragment.select("div.sect2");
-            elements.forEach(element -> {
-                element.prepend("<h2>" + element.attr("title"));
-            });
+            elements.forEach(element -> element.prepend("<h2>" + element.attr("title")));
             elements.unwrap();
 
             htmlContent = fragment.outerHtml();
         } else {
             document.select("div.sect1, div.footnotes").remove();
-            Element element = document.getElementById(tocReference.getResourceId().replace("id-", ""));//.html();
+            Element element = document.getElementById(tocReference.getResourceId().replace("id-", ""));
             if (element == null) {
                 htmlContent = document.select("body").outerHtml();
             } else {
@@ -101,5 +100,12 @@ public class BookStackProcessor {
                 chapters.get(chapters.size() - 1).getPages().add(page);
         }
 
+    }
+
+    private Element closest(Element element, String cssSelector) {
+        while (!element.is(cssSelector)) {
+            element = element.parent();
+        }
+        return element;
     }
 }

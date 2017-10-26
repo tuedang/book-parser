@@ -22,18 +22,28 @@ public class BookStackUtils {
 
             if (chapter.getPages().isEmpty()) {
                 FileUtils.writeStringToFile(
-                        new File(bf, String.format("%s__%s.html", chapterIndex, chapter.getTitle())),
+                        new File(bf, String.format("%s__%s.html", chapterIndex, escape(chapter.getTitle()))),
                         chapter.getDescription());
             } else {
-                File bfc = new File(bf, String.format("%s__%s", chapterIndex, chapter.getTitle()));
+                File bfc = new File(bf, String.format("%s__%s", chapterIndex, escape(chapter.getTitle())));
                 bfc.mkdirs();
+                //chapter description
+                FileUtils.writeStringToFile(
+                        new File(bfc, String.format("%s__%s.htm", 00, escape(chapter.getTitle()))),
+                        chapter.getDescription());
                 for (Page page : chapter.getPages()) {
                     FileUtils.writeStringToFile(
-                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page), page.getTitle().replace("/","_"))),
+                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page) + 1, escape(page.getTitle()))),
                             page.getHtmlContent());
                 }
             }
 
         }
+    }
+    private static String escape(String folder) {
+        return folder
+                .replace("/","_")
+                .replace("?", "")
+                .replace(":", "");
     }
 }

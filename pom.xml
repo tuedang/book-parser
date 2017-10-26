@@ -27,8 +27,6 @@
             <artifactId>jsoup</artifactId>
             <version>1.10.3</version>
         </dependency>
-
-
     </dependencies>
 
     <build>

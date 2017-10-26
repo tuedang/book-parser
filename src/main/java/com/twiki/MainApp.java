@@ -13,7 +13,7 @@ public class MainApp {
 
     public static void main(String... args) throws Exception {
         EpubReader epubReader = new EpubReader();
-        Collection<File> epubs = FileUtils.listFiles(new File("/Data/Development/projects/book-parser/src/main/resources/books"), new String[]{"epub"}, false);
+        Collection<File> epubs = FileUtils.listFiles(new File("/Data/books/develop"), new String[]{"epub"}, false);
         for (File epub : epubs) {
             Book book = epubReader.readEpub(new FileInputStream(epub));
             BookStack bookStack = new BookStackProcessor(book).get();

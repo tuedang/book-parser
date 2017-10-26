@@ -69,14 +69,18 @@ public class BookStackProcessor {
             elements.forEach(element -> element.prepend("<h2>" + element.attr("title")));
             elements.unwrap();
 
-            htmlContent = fragment.outerHtml();
+            //adhoc?
+            fragment.select("h1").remove();//object-oriented vs function programming
+
+            htmlContent = fragment.html();
+
         } else {
             document.select("div.sect1, div.footnotes").remove();
             Element element = document.getElementById(tocReference.getResourceId().replace("id-", ""));
             if (element == null) {
-                htmlContent = document.select("section").outerHtml();
+                htmlContent = document.select("section").html();
             } else {
-                htmlContent = element.outerHtml();
+                htmlContent = element.html();
             }
         }
 

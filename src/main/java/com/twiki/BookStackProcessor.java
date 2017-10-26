@@ -78,7 +78,7 @@ public class BookStackProcessor {
             document.select("div.sect1, div.footnotes").remove();
             Element element = document.getElementById(tocReference.getResourceId().replace("id-", ""));
             if (element == null) {
-                htmlContent = document.select("body").outerHtml();
+                htmlContent = document.select("section").outerHtml();
             } else {
                 htmlContent = element.outerHtml();
             }

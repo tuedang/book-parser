@@ -1,6 +1,6 @@
 package com.twiki.processor;
 
-import com.twiki.ResourceHelper;
+import com.twiki.helper.ResourceHelper;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.Page;

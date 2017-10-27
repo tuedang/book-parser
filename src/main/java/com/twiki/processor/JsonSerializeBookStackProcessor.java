@@ -3,7 +3,7 @@ package com.twiki.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.twiki.ResourceHelper;
+import com.twiki.helper.ResourceHelper;
 import com.twiki.bookstack.BookStack;
 
 import java.io.File;

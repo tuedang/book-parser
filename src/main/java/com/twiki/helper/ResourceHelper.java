@@ -1,4 +1,4 @@
-package com.twiki;
+package com.twiki.helper;
 
 import nl.siegmann.epublib.domain.Resource;
 

@@ -1,10 +1,10 @@
 package com.twiki.processor;
 
-import com.twiki.ResourceHelper;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.ContentEntity;
 import com.twiki.bookstack.Page;
+import com.twiki.helper.ResourceHelper;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -46,7 +46,6 @@ public class HtmlSplitterBookStackProcessor implements BookProcessor {
                     writeToFile(chapterFolder, chapter.getPages().indexOf(page) + 1, page);
                 }
             }
-
         }
     }
 

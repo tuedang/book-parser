@@ -28,6 +28,10 @@ public abstract class ContentEntity {
         return htmlContent;
     }
 
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
+    }
+
     public String getTextContent() {
         return textContent;
     }

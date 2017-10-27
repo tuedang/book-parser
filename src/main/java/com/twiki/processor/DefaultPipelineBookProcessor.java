@@ -17,7 +17,8 @@ public class DefaultPipelineBookProcessor extends PipelineBookProcessor {
     private static List<BookProcessor> createDefaultPipelineBookProcessors() {
         return Lists.newArrayList(
                 new SlugBookProcessor(),
-                new ImageUrlBookProcessor("/public/upload/")
+                new ImageUrlBookProcessor("/public/upload/"),
+                new TextContentChapterBookProcessor()
         );
     }
 }

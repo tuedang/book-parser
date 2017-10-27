@@ -20,7 +20,7 @@ public class ImageUrlBookProcessor implements BookProcessor {
     @Override
     public BookStack processBook(BookStack bookStack) throws IOException {
         String imagePath = prePath + bookStack.getSlug() + "/";
-        BookStackTraversal.visitPage(bookStack, (page, index) -> transformImageSource(page, imagePath));
+        BookStackTraversal.visitPage(bookStack, (page) -> transformImageSource(page, imagePath));
         return bookStack;
     }
 

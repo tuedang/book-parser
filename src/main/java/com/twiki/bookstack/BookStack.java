@@ -11,7 +11,7 @@ public class BookStack extends ContentEntity {
     private List<ContentEntity> contents;
 
     public BookStack(String title, String htmlContent) {
-        super(title, htmlContent, true);
+        super(title, htmlContent);
         this.type = "book";
         contents = new ArrayList<>();
     }
@@ -32,7 +32,7 @@ public class BookStack extends ContentEntity {
 
     @Transient
     public Chapter getLastChapter() {
-        ContentEntity contentEntity = contents.get(contents.size() - 1);//.getPages().add(page);
+        ContentEntity contentEntity = contents.get(contents.size() - 1);
         if(!(contentEntity instanceof Chapter)) {
             throw new RuntimeException("Wrong content type");
         }

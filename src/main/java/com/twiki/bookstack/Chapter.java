@@ -7,7 +7,7 @@ public class Chapter extends ContentEntity {
     private List<Page> pages;
 
     public Chapter(String title, String htmlContent) {
-        super(title, htmlContent, true);
+        super(title, htmlContent);
         this.type = "chapter";
         pages = new ArrayList<>();
     }

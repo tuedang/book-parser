@@ -22,6 +22,7 @@ public class BookStackInitializer implements BookProcessor{
     public BookStackInitializer(Book book) {
         this.book = book;
         processBook(null);
+        this.bookStack.setOriginalBook(book);
     }
 
     public BookStack get() {

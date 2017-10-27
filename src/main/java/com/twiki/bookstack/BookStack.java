@@ -1,10 +1,13 @@
 package com.twiki.bookstack;
 
+import nl.siegmann.epublib.domain.Book;
+
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookStack extends ContentEntity {
+    private Book originalBook;
 
     private String slug;
 
@@ -45,5 +48,14 @@ public class BookStack extends ContentEntity {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    @Transient
+    public Book getOriginalBook() {
+        return originalBook;
+    }
+
+    public void setOriginalBook(Book originalBook) {
+        this.originalBook = originalBook;
     }
 }

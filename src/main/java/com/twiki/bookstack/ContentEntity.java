@@ -5,6 +5,7 @@ public abstract class ContentEntity {
     protected String type;
     protected String htmlContent;
     protected String textContent;
+    private String slug;
 
     public ContentEntity(String title, String htmlContent) {
         this.title = title;
@@ -33,5 +34,13 @@ public abstract class ContentEntity {
 
     public String getType() {
         return type;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 }

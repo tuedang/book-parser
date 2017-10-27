@@ -9,8 +9,6 @@ import java.util.List;
 public class BookStack extends ContentEntity {
     private Book originalBook;
 
-    private String slug;
-
     private List<ContentEntity> contents;
 
     public BookStack(String title, String htmlContent) {
@@ -40,14 +38,6 @@ public class BookStack extends ContentEntity {
             throw new RuntimeException("Wrong content type");
         }
         return (Chapter) contentEntity;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
     }
 
     @Transient

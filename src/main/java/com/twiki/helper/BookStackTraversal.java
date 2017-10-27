@@ -21,6 +21,11 @@ public class BookStackTraversal {
         void visit(Chapter chapter);
     }
 
+    @FunctionalInterface
+    public interface ContentVisitor {
+        void visit(ContentEntity contentEntity);
+    }
+
     public static void visitBook(BookStack bookStack, OrderedContentVisitor callback) {
         for (ContentEntity contentEntity : bookStack.getContents()) {
             callback.visit(contentEntity, contentEntity.getType(), bookStack.getContents().indexOf(contentEntity));
@@ -28,6 +33,18 @@ public class BookStackTraversal {
                 Chapter chapter = (Chapter) contentEntity;
                 for (Page page : chapter.getPages()) {
                     callback.visit(page, page.getType(), chapter.getPages().indexOf(page));
+                }
+            }
+        }
+    }
+
+    public static void visitContent(BookStack bookStack, ContentVisitor callback) {
+        for (ContentEntity contentEntity : bookStack.getContents()) {
+            callback.visit(contentEntity);
+            if (contentEntity instanceof Chapter) {
+                Chapter chapter = (Chapter) contentEntity;
+                for (Page page : chapter.getPages()) {
+                    callback.visit(page);
                 }
             }
         }

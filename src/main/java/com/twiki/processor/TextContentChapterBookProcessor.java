@@ -3,8 +3,7 @@ package com.twiki.processor;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
 import com.twiki.helper.BookStackTraversal;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import net.htmlparser.jericho.Source;
 
 import java.io.IOException;
 
@@ -16,8 +15,12 @@ public class TextContentChapterBookProcessor implements BookProcessor {
         return bookStack;
     }
 
-    private void transformImageSource(Chapter chapter) {
-        Document document = Jsoup.parseBodyFragment(chapter.getHtmlContent());
-        chapter.setTextContent(document.text());
+    public void transformImageSource(Chapter chapter) {
+        Source source = new Source(chapter.getHtmlContent());
+        String renderedText = source.getRenderer()
+                .setMaxLineLength(2000)
+                .toString();
+        chapter.setTextContent(renderedText);
     }
+
 }

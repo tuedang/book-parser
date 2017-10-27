@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
+import com.twiki.bookstack.ContentEntity;
 import com.twiki.bookstack.Page;
 import org.apache.commons.io.FileUtils;
 
@@ -20,28 +21,29 @@ public class BookStackUtils {
         File bf = new File(baseFolder, escape(bookStack.getTitle()));
         bf.mkdirs();
 
-//        for (Chapter chapter : bookStack.getChapters()) {
-//            int chapterIndex = bookStack.getChapters().indexOf(chapter);
-//
-//            if (chapter.getPages().isEmpty()) {
-//                FileUtils.writeStringToFile(
-//                        new File(bf, String.format("%s__%s.html", chapterIndex, escape(chapter.getTitle()))),
-//                        chapter.getDescription());
-//            } else {
-//                File bfc = new File(bf, String.format("%s__%s", chapterIndex, escape(chapter.getTitle())));
-//                bfc.mkdirs();
-//                //chapter description
-//                FileUtils.writeStringToFile(
-//                        new File(bfc, String.format("%s__%s.htm", 0, escape(chapter.getTitle()))),
-//                        chapter.getDescription());
-//                for (Page page : chapter.getPages()) {
-//                    FileUtils.writeStringToFile(
-//                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page) + 1, escape(page.getTitle()))),
-//                            page.getHtmlContent());
-//                }
-//            }
-//
-//        }
+        for (ContentEntity contentEntity : bookStack.getContents()) {
+            int contentEntityIndex = bookStack.getContents().indexOf(contentEntity);
+
+            if (contentEntity.getType().equals("page")) {
+                FileUtils.writeStringToFile(
+                        new File(bf, String.format("%s__%s.html", contentEntityIndex, escape(contentEntity.getTitle()))),
+                        contentEntity.getHtmlContent());
+            } else {
+                Chapter chapter = (Chapter) contentEntity;
+                File bfc = new File(bf, String.format("%s__%s", contentEntityIndex, escape(chapter.getTitle())));
+                bfc.mkdirs();
+                //chapter description
+                FileUtils.writeStringToFile(
+                        new File(bfc, String.format("%s__%s.htm", 0, escape(chapter.getTitle()))),
+                        contentEntity.getHtmlContent());
+                for (Page page : chapter.getPages()) {
+                    FileUtils.writeStringToFile(
+                            new File(bfc, String.format("%s__%s.html", chapter.getPages().indexOf(page) + 1, escape(page.getTitle()))),
+                            page.getHtmlContent());
+                }
+            }
+
+        }
     }
     private static String escape(String folder) {
         return folder

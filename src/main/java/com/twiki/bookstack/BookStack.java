@@ -6,6 +6,8 @@ import java.util.List;
 
 public class BookStack extends ContentEntity {
 
+    private String slug;
+
     private List<ContentEntity> contents;
 
     public BookStack(String title, String htmlContent) {
@@ -37,4 +39,11 @@ public class BookStack extends ContentEntity {
         return (Chapter) contentEntity;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
 }

@@ -1,6 +1,7 @@
 package com.twiki;
 
 import com.twiki.bookstack.BookStack;
+import com.twiki.processor.*;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.epub.EpubReader;
 import org.apache.commons.io.FileUtils;
@@ -16,9 +17,11 @@ public class MainApp {
         Collection<File> epubs = FileUtils.listFiles(new File("D:\\books/dev"), new String[]{"epub"}, false);
         for (File epub : epubs) {
             Book book = epubReader.readEpub(new FileInputStream(epub));
-            BookStack bookStack = new BookStackProcessor(book).get();
-            BookStackUtils.generateFolderHtml(bookStack, new File("D:\\books\\books_html"));
-//            BookStackUtils.generateJson(bookStack, new File("D:\\books\\books_json"));
+            BookStack bookStack = new BookStackInitializer(book).get();
+            BookProcessor bookProcessor = new DefaultPipelineBookProcessor()
+                    .addBookProcessor(new HtmlSplitterBookStackProcessor("D:\\books\\books_html"));
+//                    .addBookProcessor(new JsonSerializeBookStackProcessor("D:\\books\\books_json"));
+            bookProcessor.processBook(bookStack);
         }
     }
 }

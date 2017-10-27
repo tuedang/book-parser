@@ -1,5 +1,6 @@
-package com.twiki;
+package com.twiki.processor;
 
+import com.twiki.ResourceHelper;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.Page;
@@ -12,35 +13,35 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.List;
 
-public class BookStackProcessor {
+public class BookStackInitializer implements BookProcessor{
     private Book book;
     private BookStack bookStack;
 
-    public BookStackProcessor(Book book) {
+    public BookStackInitializer(Book book) {
         this.book = book;
-        try {
-            this.bookStack = new BookStack(book.getTitle(), new String(book.getCoverPage().getData()));
-            process();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        processBook(null);
     }
 
     public BookStack get() {
         return this.bookStack;
     }
 
-    private BookStack process() throws IOException {
+    @Override
+    public BookStack processBook(BookStack bookStackInit) {
+        if (bookStackInit != null) {
+            throw new IllegalArgumentException("This is init state, it must be null");
+        }
+        if (bookStack != null) {
+            return bookStack;
+        }
+        this.bookStack = new BookStack(book.getTitle(), ResourceHelper.getData(book.getCoverPage()));
         handle(0, book.getTableOfContents().getTocReferences());
         return bookStack;
-
     }
 
-    private void handle(Integer level, List<TOCReference> tocReferences) throws IOException {
+    private void handle(Integer level, List<TOCReference> tocReferences)  {
         level++;
         for (TOCReference tocReference : tocReferences) {
             processTOC(level, tocReference);
@@ -50,9 +51,8 @@ public class BookStackProcessor {
         }
     }
 
-    private void processTOC(int level, TOCReference tocReference) throws IOException {
-        String data = new String(tocReference.getResource().getData());
-        Document document = Jsoup.parseBodyFragment(data);
+    private void processTOC(int level, TOCReference tocReference) {
+        Document document = Jsoup.parseBodyFragment(ResourceHelper.getData(tocReference.getResource()));
 
         String htmlContent;
         if (StringUtils.isNotEmpty(tocReference.getFragmentId())) {
@@ -106,4 +106,5 @@ public class BookStackProcessor {
         }
         return element;
     }
+
 }

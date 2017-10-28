@@ -44,7 +44,7 @@ public class ImageUrlBookProcessor implements BookProcessor {
             Document document = Jsoup.parseBodyFragment(page.getHtmlContent());
             document.getElementsByTag(IMAGE_TAG).forEach(imgElement -> {
                 imgElement.attr(IMAGE_SRC, imagePath + imgElement.attr(IMAGE_SRC));
-                log.info(String.format("Image in page [%s#%s] ", page.getTitle(), imgElement.attr(IMAGE_SRC)));
+                log.debug(String.format("Image in page [%s#%s] ", page.getTitle(), imgElement.attr(IMAGE_SRC)));
             });
             page.setHtmlContent(document.outerHtml());
 

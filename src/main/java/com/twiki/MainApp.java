@@ -17,15 +17,17 @@ public class MainApp {
     public static void main(String... args) throws Exception {
         EpubReader epubReader = new EpubReader();
         Collection<File> epubs = FileUtils.listFiles(new File("/Data/books/books_dev"), new String[]{"epub"}, false);
+
+        String pathGenerate = "/Data/Development/projects/BookStack/database/seeds/books";
         for (File epub : epubs) {
             Stopwatch stopwatch = Stopwatch.createStarted();
 
             Book book = epubReader.readEpub(new FileInputStream(epub));
             BookStack bookStack = new BookStackInitializer(book).get();
             BookProcessor bookProcessor = new DefaultPipelineBookProcessor()
-                    .addBookProcessor(new ImageUrlBookProcessor("/Data/books/books_json", "/book_res/"))
+                    .addBookProcessor(new ImageUrlBookProcessor(pathGenerate, "/book_res/"))
 //                    .addBookProcessor(new HtmlSplitterBookStackProcessor("/Data/books/books_html"));
-                    .addBookProcessor(new JsonSerializeBookStackProcessor("/Data/books/books_json"));
+                    .addBookProcessor(new JsonSerializeBookStackProcessor(pathGenerate));
             bookProcessor.processBook(bookStack);
             System.out.println(String.format("Parsing time: %s seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
 

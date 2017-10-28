@@ -12,8 +12,9 @@ public class DefaultPipelineBookProcessor extends PipelineBookProcessor {
 
     private static List<BookProcessor> createDefaultPipelineBookProcessors() {
         return Lists.newArrayList(
-                new SlugBookProcessor(),
+                new CoverBookProcessor(),
                 new GroupIntroductionPageProcessor(),
+                new SlugBookProcessor(),
                 new TextContentChapterBookProcessor()
         );
     }

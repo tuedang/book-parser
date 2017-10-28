@@ -1,6 +1,7 @@
 package com.twiki.helper;
 
 import nl.siegmann.epublib.domain.Resource;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -43,5 +44,9 @@ public class ResourceHelper {
 
     public static String escape(String folder) {
         return unAccent(folder);
+    }
+
+    public static boolean isImage(String filename) {
+        return StringUtils.endsWithAny(filename.toLowerCase(), ".png", ".jpg", ".jpeg", ".gif");
     }
 }

@@ -3,6 +3,7 @@ package com.twiki.processor;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Page;
 import com.twiki.helper.BookStackTraversal;
+import com.twiki.helper.ResourceHelper;
 import nl.siegmann.epublib.domain.Resource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -53,15 +54,10 @@ public class ImageUrlBookProcessor implements BookProcessor {
     private void extractImage(BookStack bookStack, String path) {
         bookStack.getOriginalBook().getResources().getResourceMap()
                 .entrySet().stream()
-                .filter(entry -> isImage(entry.getKey()))
+                .filter(entry -> ResourceHelper.isImage(entry.getKey()))
                 .forEach(e -> writeImage(path + "/" + e.getKey(), e.getValue()));
     }
 
-    private boolean isImage(String file) {
-        return file.endsWith(".png")
-                || file.endsWith(".jpg")
-                || file.endsWith(".jpeg");
-    }
 
     private void writeImage(String fileout, Resource resource) {
         if (!baseFolder.exists()) {

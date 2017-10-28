@@ -22,12 +22,13 @@ public class MainApp {
 
             Book book = epubReader.readEpub(new FileInputStream(epub));
             BookStack bookStack = new BookStackInitializer(book).get();
-            System.out.println("Time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
             BookProcessor bookProcessor = new DefaultPipelineBookProcessor()
+                    .addBookProcessor(new ImageUrlBookProcessor("/Data/books/books_json", "/book_res/"))
 //                    .addBookProcessor(new HtmlSplitterBookStackProcessor("/Data/books/books_html"));
                     .addBookProcessor(new JsonSerializeBookStackProcessor("/Data/books/books_json"));
             bookProcessor.processBook(bookStack);
-            System.out.println("Time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
+            System.out.println(String.format("Parsing time: %s seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
+
         }
     }
 }

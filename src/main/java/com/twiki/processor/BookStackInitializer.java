@@ -70,7 +70,7 @@ public class BookStackInitializer implements BookProcessor{
             elements.unwrap();
 
             //adhoc?
-            fragment.select("h1").remove();//object-oriented vs function programming
+            fragment.select("h1:first-child").remove();//object-oriented vs function programming
 
             htmlContent = fragment.html();
 

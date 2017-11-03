@@ -15,6 +15,7 @@ public class DefaultPipelineBookProcessor extends PipelineBookProcessor {
                 new CoverBookProcessor(),
                 new GroupIntroductionPageProcessor(),
                 new SlugBookProcessor(),
+                new HeaderIdAssignBookProcessor(),
                 new TextContentChapterBookProcessor()
         );
     }

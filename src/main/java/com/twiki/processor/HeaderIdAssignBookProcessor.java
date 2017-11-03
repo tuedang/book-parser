@@ -18,12 +18,12 @@ public class HeaderIdAssignBookProcessor implements BookProcessor {
     public BookStack processBook(BookStack bookStack) throws IOException {
         BookStackTraversal.visitPage(bookStack, (page -> {
             Document document = Jsoup.parseBodyFragment(page.getHtmlContent());
-            Elements headings = document.select("h1, h2, h3");
+            Elements headings = document.select("h1, h2, h3, h4, h5, h6");
             if (!headings.isEmpty()) {
                 headings.forEach(h -> {
-                    if (StringUtils.isEmpty(h.attr("id"))) {
+                    if (StringUtils.isEmpty(h.id())) {
                         h.attr("id", String.format("id-%s-%s", h.tagName(), AppStringUtils.slugify(h.text())));
-                        LOG.debug(String.format("Assign Id in page [%s#%s] ", page.getTitle(), h.attr("id")));
+                        LOG.debug(String.format("Assign Id in page [%s#%s] ", page.getTitle(), h.id()));
                     }
                 });
                 page.setHtmlContent(document.outerHtml());

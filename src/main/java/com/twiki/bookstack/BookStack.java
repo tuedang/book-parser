@@ -1,13 +1,11 @@
 package com.twiki.bookstack;
 
-import nl.siegmann.epublib.domain.Book;
-
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookStack extends ContentEntity {
-    private Book originalBook;
+    private BookMetaContextHolder bookMetaContextHolder;
 
     private List<ContentEntity> contents;
 
@@ -41,11 +39,11 @@ public class BookStack extends ContentEntity {
     }
 
     @Transient
-    public Book getOriginalBook() {
-        return originalBook;
+    public BookMetaContextHolder getBookMetaContextHolder() {
+        return bookMetaContextHolder;
     }
 
-    public void setOriginalBook(Book originalBook) {
-        this.originalBook = originalBook;
+    public void setBookMetaContextHolder(BookMetaContextHolder bookMetaContextHolder) {
+        this.bookMetaContextHolder = bookMetaContextHolder;
     }
 }

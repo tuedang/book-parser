@@ -52,7 +52,7 @@ public class ImageUrlBookProcessor implements BookProcessor {
     }
 
     private void extractImage(BookStack bookStack, String path) {
-        bookStack.getOriginalBook().getResources().getResourceMap()
+        bookStack.getBookMetaContextHolder().getBook().getResources().getResourceMap()
                 .entrySet().stream()
                 .filter(entry -> ResourceHelper.isImage(entry.getKey()))
                 .forEach(e -> writeImage(path + "/" + e.getKey(), e.getValue()));

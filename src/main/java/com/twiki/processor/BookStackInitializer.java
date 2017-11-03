@@ -1,5 +1,6 @@
 package com.twiki.processor;
 
+import com.twiki.bookstack.BookMetaContextHolder;
 import com.twiki.helper.ResourceHelper;
 import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
@@ -7,6 +8,8 @@ import com.twiki.bookstack.Page;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.TOCReference;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,14 +17,15 @@ import org.jsoup.select.Elements;
 
 import java.util.List;
 
-public class BookStackInitializer implements BookProcessor{
+public class BookStackInitializer implements BookProcessor {
+    private static Log LOG = LogFactory.getLog(BookStackInitializer.class);
+
     private Book book;
     private BookStack bookStack;
 
     public BookStackInitializer(Book book) {
         this.book = book;
         processBook(null);
-        this.bookStack.setOriginalBook(book);
     }
 
     public BookStack get() {
@@ -37,6 +41,7 @@ public class BookStackInitializer implements BookProcessor{
             return bookStack;
         }
         this.bookStack = new BookStack(book.getTitle(), ResourceHelper.getData(book.getCoverPage()));
+        this.bookStack.setBookMetaContextHolder(new BookMetaContextHolder(book));
         handle(0, book.getTableOfContents().getTocReferences());
         return bookStack;
     }
@@ -89,7 +94,9 @@ public class BookStackInitializer implements BookProcessor{
                 if (tocReference.getChildren().isEmpty()) {
                     bookStack.addPage(new Page(tocReference.getTitle(), htmlContent));
                 } else {
-                    bookStack.addChapter(new Chapter(tocReference.getTitle(), htmlContent));
+                    Chapter chapter = new Chapter(tocReference.getTitle(), htmlContent);
+                    bookStack.getBookMetaContextHolder().putResource(tocReference.getCompleteHref(), chapter);
+                    bookStack.addChapter(chapter);
                 }
                 break;
             case 2:

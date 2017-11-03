@@ -7,6 +7,8 @@ import com.twiki.processor.*;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.epub.EpubReader;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class MainApp implements CommandLineRunner {
+    private static Log LOG = LogFactory.getLog(MainApp.class);
 
     @Value("${file.path.out}")
     private String generatedFolder;
@@ -40,19 +43,21 @@ public class MainApp implements CommandLineRunner {
 
         List<File> epubs = epubPathFile.isFile() ?
                 Lists.newArrayList(epubPathFile) :
-                Lists.newArrayList(FileUtils.listFiles(new File(epubPath), new String[]{"epub"}, false));
+                Lists.newArrayList(FileUtils.listFiles(epubPathFile, new String[]{"epub"}, false));
 
+        BookProcessor bookProcessor = new DefaultPipelineBookProcessor()
+                .addBookProcessor(new ImageUrlBookProcessor(generatedFolder, imageSrcPrefixPath))
+//                    .addBookProcessor(new HtmlSplitterBookStackProcessor("/Data/books/books_html"));
+                .addBookProcessor(new JsonSerializeBookStackProcessor(generatedFolder));
         for (File epub : epubs) {
             Stopwatch stopwatch = Stopwatch.createStarted();
 
+            LOG.info("Parsing book: " + epub.getName());
             Book book = epubReader.readEpub(new FileInputStream(epub));
             BookStack bookStack = new BookStackInitializer(book).get();
-            BookProcessor bookProcessor = new DefaultPipelineBookProcessor()
-                    .addBookProcessor(new ImageUrlBookProcessor(generatedFolder, imageSrcPrefixPath))
-//                    .addBookProcessor(new HtmlSplitterBookStackProcessor("/Data/books/books_html"));
-                    .addBookProcessor(new JsonSerializeBookStackProcessor(generatedFolder));
+
             bookProcessor.processBook(bookStack);
-            System.out.println(String.format("Parsing time: %s seconds", stopwatch.elapsed(TimeUnit.SECONDS)));
+            LOG.info(String.format("Parsed '%s' in: %s seconds", epub.getName(), stopwatch.stop().elapsed(TimeUnit.SECONDS)));
         }
     }
 }

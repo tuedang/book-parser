@@ -1,6 +1,7 @@
 package com.twiki;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
 import com.twiki.bookstack.BookStack;
 import com.twiki.processor.*;
 import nl.siegmann.epublib.domain.Book;
@@ -13,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
@@ -35,7 +36,11 @@ public class MainApp implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         EpubReader epubReader = new EpubReader();
-        Collection<File> epubs = FileUtils.listFiles(new File(epubPath), new String[]{"epub"}, false);
+        File epubPathFile = new File(epubPath);
+
+        List<File> epubs = epubPathFile.isFile() ?
+                Lists.newArrayList(epubPathFile) :
+                Lists.newArrayList(FileUtils.listFiles(new File(epubPath), new String[]{"epub"}, false));
 
         for (File epub : epubs) {
             Stopwatch stopwatch = Stopwatch.createStarted();

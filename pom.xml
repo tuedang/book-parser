@@ -23,6 +23,13 @@
         <jackson.version>2.9.2</jackson.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>epublib-mvn-repo</id>
+            <url>https://raw.githubusercontent.com/psiegman/mvn-repo/master/releases</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>nl.siegmann.epublib</groupId>

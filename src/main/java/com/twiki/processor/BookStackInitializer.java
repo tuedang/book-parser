@@ -6,7 +6,6 @@ import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.Page;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.TOCReference;
-import nl.siegmann.epublib.util.CollectionUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -87,7 +86,7 @@ public class BookStackInitializer implements BookProcessor{
 
         switch (level) {
             case 1:
-                if (CollectionUtil.isEmpty(tocReference.getChildren())) {
+                if (tocReference.getChildren().isEmpty()) {
                     bookStack.addPage(new Page(tocReference.getTitle(), htmlContent));
                 } else {
                     bookStack.addChapter(new Chapter(tocReference.getTitle(), htmlContent));

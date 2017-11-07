@@ -14,10 +14,10 @@ public class DefaultPipelineBookProcessor extends PipelineBookProcessor {
         return Lists.newArrayList(
                 new CoverBookProcessor(),
                 new GroupIntroductionPageProcessor(),
-                new SlugBookProcessor(),
                 new HeaderIdAssignBookProcessor(),
                 new ChapterLinkingBookProcessor(),
-                new TextContentChapterBookProcessor()
+                new TextContentChapterBookProcessor(),
+                new SlugBookProcessor()
         );
     }
 }

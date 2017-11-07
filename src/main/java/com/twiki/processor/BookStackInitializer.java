@@ -80,7 +80,7 @@ public class BookStackInitializer implements BookProcessor {
             htmlContent = fragment.html();
 
         } else {
-            document.select("div.sect1, div.footnotes").remove();
+            document.select("div.sect1, div.footnotes, div.titlepage").remove();
             Element element = document.getElementById(tocReference.getResourceId().replace("id-", ""));
             if (element == null) {
                 htmlContent = document.select("section").html();

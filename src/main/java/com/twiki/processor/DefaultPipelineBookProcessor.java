@@ -14,9 +14,9 @@ public class DefaultPipelineBookProcessor extends PipelineBookProcessor {
         return Lists.newArrayList(
                 new CoverBookProcessor(),
                 new GroupIntroductionPageProcessor(),
+                new TextContentChapterBookProcessor(),
                 new HeaderIdAssignBookProcessor(),
                 new ChapterLinkingBookProcessor(),
-                new TextContentChapterBookProcessor(),
                 new SlugBookProcessor()
         );
     }

@@ -2,6 +2,7 @@ package com.twiki.tools;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.twiki.helper.AppStringUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -22,7 +23,7 @@ public class PDFSplitter {
         List<Integer> indexPages = Lists.newArrayList(rangePages.keySet());
         Collections.sort(indexPages);
 
-        String name = FilenameUtils.getBaseName(pdfIn.getName());
+        String name = AppStringUtils.slugify(FilenameUtils.getBaseName(pdfIn.getName()));
         File bookFolder = new File(pdfOutFolder, name);
         bookFolder.mkdir();
 
@@ -40,9 +41,9 @@ public class PDFSplitter {
             int toPage = (index == splittedDocuments.size() - 1) ? document.getNumberOfPages() : indexPages.get(index);
 
 //            String filename = String.format("%02d_%s_%s-%s_%s.pdf", index, name, fromPage + 1, toPage, rangePages.get(indexPages.get(index)));
-            String filename = String.format("%02d_%s.pdf", index, rangePages.get(indexPages.get(index)));
+            String filename = String.format("%02d_%s", index, rangePages.get(indexPages.get(index)));
 //            String filename = String.format("%s.pdf", rangePages.get(indexPages.get(index)));
-            pdDocument.save(new File(bookFolder, filename));
+            pdDocument.save(new File(bookFolder, AppStringUtils.slugify(filename) + ".pdf"));
         }
     }
 
@@ -58,7 +59,7 @@ public class PDFSplitter {
                 .put(54 + 10, "Chapter 3_Supporting Details Facts, Quotations, and Statistics")
                 .put(55 + 10, "Part II_ WRITING AN ESSAY")
                 .put(80 + 10, "Chapter 4_From Paragraph to Essay")
-                .put(93 + 10, "Chapter 5_Chronological Order_ Process Essays")
+                .put(93 + 10, "Chapter 5_Chronological Order Process Essays")
                 .put(110 + 10, "Chapter 6_Cause,Effect essays")
                 .put(126 + 10, "Chapter 7_Comparison,Contrast Essay")
                 .put(141 + 10, "Chapter 8_Paraphrase and Summary")

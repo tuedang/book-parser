@@ -3,6 +3,7 @@ package com.twiki.bookstack;
 public abstract class ContentEntity {
     protected String title;
     protected String type;
+    protected Integer priority;
     protected String htmlContent;
     protected String textContent;
     private String slug;
@@ -42,5 +43,13 @@ public abstract class ContentEntity {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 }

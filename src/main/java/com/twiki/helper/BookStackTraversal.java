@@ -7,6 +7,9 @@ import com.twiki.bookstack.Page;
 import org.apache.commons.lang3.StringUtils;
 
 public class BookStackTraversal {
+    public static final int FIRST_LEVEL = 0;
+    public static final int SUB_LEVEL = 1;
+
     @FunctionalInterface
     public interface OrderedContentVisitor {
         void visit(ContentEntity contentEntity, String type, int index);
@@ -24,7 +27,7 @@ public class BookStackTraversal {
 
     @FunctionalInterface
     public interface ContentVisitor {
-        void visit(ContentEntity contentEntity);
+        void visit(ContentEntity contentEntity, int level);
     }
 
     public static void visitBook(BookStack bookStack, OrderedContentVisitor callback) {
@@ -41,11 +44,11 @@ public class BookStackTraversal {
 
     public static void visitContent(BookStack bookStack, ContentVisitor callback) {
         for (ContentEntity contentEntity : bookStack.getContents()) {
-            callback.visit(contentEntity);
+            callback.visit(contentEntity, FIRST_LEVEL);
             if (contentEntity instanceof Chapter) {
                 Chapter chapter = (Chapter) contentEntity;
                 for (Page page : chapter.getPages()) {
-                    callback.visit(page);
+                    callback.visit(page, SUB_LEVEL);
                 }
             }
         }

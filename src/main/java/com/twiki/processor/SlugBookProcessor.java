@@ -11,7 +11,7 @@ public class SlugBookProcessor implements BookProcessor {
     @Override
     public BookStack processBook(BookStack bookStack) throws IOException {
         bookStack.setSlug(AppStringUtils.slugify(bookStack.getTitle()));
-        BookStackTraversal.visitContent(bookStack, (contentEntity) ->
+        BookStackTraversal.visitContent(bookStack, (contentEntity, level) ->
                 contentEntity.setSlug(AppStringUtils.slugify(contentEntity.getTitle())));
         return bookStack;
     }

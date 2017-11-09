@@ -4,6 +4,7 @@ import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.ContentEntity;
 import com.twiki.bookstack.Page;
+import org.apache.commons.lang3.StringUtils;
 
 public class BookStackTraversal {
     @FunctionalInterface
@@ -48,6 +49,26 @@ public class BookStackTraversal {
                 }
             }
         }
+    }
+
+    public static void print(BookStack bookStack) {
+        System.out.println(bookStack.getTitle());
+        for (ContentEntity contentEntity : bookStack.getContents()) {
+            if (contentEntity instanceof Chapter) {
+                Chapter chapter = (Chapter) contentEntity;
+                print("├── ", chapter);
+                for (Page page : chapter.getPages()) {
+                    print("    └── ", page);
+                }
+            } else {
+                print("└── ", contentEntity);
+            }
+        }
+    }
+
+    private static void print(String prefix, ContentEntity contentEntity) {
+        System.out.println(String.format("%s%s      (%s)", prefix, contentEntity.getTitle(),
+                StringUtils.abbreviate(contentEntity.getHtmlContent(), 20)));
     }
 
     public static void visitPage(BookStack bookStack, PageVisitor pageVisitor) {

@@ -1,4 +1,4 @@
-package com.twiki.tools;
+package com.twiki.pdf;
 
 import com.google.common.collect.Lists;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class PdfToc {
+public class PdfTocReader {
     @FunctionalInterface
     public interface BookMarkVisitor {
         void visit(PDDocument document, PDOutlineItem bookmark, int pageNumber, int level);
@@ -21,7 +21,7 @@ public class PdfToc {
         PDDocument document = PDDocument.load(file);
         PDDocumentOutline outline = document.getDocumentCatalog().getDocumentOutline();
         if (outline == null) {
-            return;
+            throw new IOException("File has no bookmark");
         }
         printBookmark(document, outline, 0, visitor);
     }

@@ -4,7 +4,6 @@ import com.twiki.bookstack.BookStack;
 import com.twiki.bookstack.Chapter;
 import com.twiki.bookstack.Page;
 import com.twiki.processor.BookProcessor;
-import com.twiki.tools.PdfToc;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class PDFInitializer implements BookProcessor {
     public BookStack processBook(BookStack bookStackNull) throws IOException {
         if (bookStackNull != null) throw new IOException("This is using for initialize bookstack");
 
-        PdfToc pdfToc = new PdfToc();
+        PdfTocReader pdfToc = new PdfTocReader();
         pdfToc.execute(pdfFile, (document, bookmark, pageNumber, level) -> {
             if (level < 2) {
                 switch (level + 1) {
@@ -35,7 +34,6 @@ public class PDFInitializer implements BookProcessor {
                         }
                         break;
                     case 2:
-
                         Page page = new Page(bookmark.getTitle(), ""+pageNumber);
                         bookStack.getLastChapter().addPage(page);
                         break;

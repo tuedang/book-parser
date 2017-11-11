@@ -13,22 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * This is an example on how to add bookmarks to a PDF document.  It simply
- * adds 1 bookmark for every page.
- */
 public class BookmarksUtil {
     private BookmarksUtil() {
         //utility class
     }
 
-    /**
-     * This will print the documents data.
-     *
-     * @param inFile The PDF input
-     * @param outFile the PDF output
-     * @throws Exception If there is an error parsing the document.
-     */
     public static void generateBookmark(File inFile, File outFile) throws IOException {
 
         try (PDDocument document = PDDocument.load(inFile)) {
@@ -69,7 +58,7 @@ public class BookmarksUtil {
             PDDocumentOutline outline = new PDDocumentOutline();
             document.getDocumentCatalog().setDocumentOutline(outline);
             PDOutlineItem pagesOutline = new PDOutlineItem();
-            pagesOutline.setTitle("All Pages");
+            pagesOutline.setTitle("Bookmark pages");
             outline.addLast(pagesOutline);
 
             List<PDPage> pages = Lists.newArrayList(document.getPages().iterator());
@@ -87,9 +76,11 @@ public class BookmarksUtil {
         }
     }
 
-    public Map<Integer, String> shiftBookMarks(Map<Integer, String> bookmarks, int offset) {
-//        bookmarks.entrySet().stream().
-        return bookmarks;
+    public static Map<Integer, String> shiftBookMarks(Map<Integer, String> bookmarks, int offset) {
+        return bookmarks.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey() + offset,
+                        e -> e.getValue()));
     }
 
     private static PDOutlineItem makeBookMark(String title, PDPage targetPage) {

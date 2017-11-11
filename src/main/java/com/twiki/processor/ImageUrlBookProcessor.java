@@ -40,15 +40,19 @@ public class ImageUrlBookProcessor implements BookProcessor {
     }
 
     private void transformImageSource(Page page, String imagePath) {
-        if (StringUtils.containsIgnoreCase(page.getHtmlContent(), IMAGE_TAG)) {
-            Document document = Jsoup.parseBodyFragment(page.getHtmlContent());
-            document.getElementsByTag(IMAGE_TAG).forEach(imgElement -> {
-                imgElement.attr(IMAGE_SRC, imagePath + imgElement.attr(IMAGE_SRC));
-                log.debug(String.format("Image in page [%s#%s] ", page.getTitle(), imgElement.attr(IMAGE_SRC)));
-            });
-            page.setHtmlContent(document.outerHtml());
+        Document document = Jsoup.parseBodyFragment(page.getHtmlContent());
+        document.getElementsByTag(IMAGE_TAG).forEach(imgElement -> {
+            imgElement.attr(IMAGE_SRC, imagePath + imgElement.attr(IMAGE_SRC).replaceFirst("../", ""));
+            log.debug(String.format("Image in page [%s#%s] ", page.getTitle(), imgElement.attr(IMAGE_SRC)));
+        });
 
-        }
+        document.select("svg>image").forEach(imgElement -> {
+            imgElement.attr("xlink:href", imagePath + imgElement.attr("xlink:href"));
+        });
+
+        page.setHtmlContent(document.outerHtml());
+
+
     }
 
     private void extractImage(BookStack bookStack, String path) {

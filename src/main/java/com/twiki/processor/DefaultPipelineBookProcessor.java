@@ -1,6 +1,7 @@
 package com.twiki.processor;
 
 import com.google.common.collect.Lists;
+import com.twiki.adhoc.Spring5MicroserviceBookProcessor;
 
 import java.util.List;
 
@@ -18,7 +19,10 @@ public class DefaultPipelineBookProcessor extends PipelineBookProcessor {
                 new SlugBookProcessor(),
                 new HeaderIdAssignBookProcessor(),
                 new ChapterLinkingBookProcessor(),
-                new IndexAssignmentBookProcessor()
+                new IndexAssignmentBookProcessor(),
+
+                //adhoc
+                new Spring5MicroserviceBookProcessor()
         );
     }
 }

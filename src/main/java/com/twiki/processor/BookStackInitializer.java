@@ -63,7 +63,7 @@ public class BookStackInitializer implements BookProcessor {
         if (StringUtils.isNotEmpty(tocReference.getFragmentId())) {
             Element fragment = document.getElementById(tocReference.getFragmentId());
             fragment = closest(fragment, "div.sect1, section, body");
-            fragment.select("div.titlepage").remove();
+            fragment.select("h1.header-title, div.titlepage").remove();
             for (TOCReference toc : tocReference.getChildren()) {
                 Element f = fragment.getElementById(toc.getFragmentId());
                 if (f != null) f.remove();
@@ -80,7 +80,7 @@ public class BookStackInitializer implements BookProcessor {
             htmlContent = fragment.html();
 
         } else {
-            document.select("div.sect1, div.footnotes, div.titlepage").remove();
+            document.select("h1.header-title, div.sect1, div.footnotes, div.titlepage").remove();
             Element element = document.getElementById(tocReference.getResourceId().replace("id-", ""));
             if (element == null) {
                 htmlContent = document.select("section").html();

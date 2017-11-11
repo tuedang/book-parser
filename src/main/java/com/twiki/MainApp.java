@@ -47,13 +47,14 @@ public class MainApp implements CommandLineRunner {
 
         BookProcessor bookProcessor = new DefaultPipelineBookProcessor()
                 .addBookProcessor(new ImageUrlBookProcessor(generatedFolder, imageSrcPrefixPath))
-//                    .addBookProcessor(new HtmlSplitterBookStackProcessor("/Data/books/books_html"));
+//                    .addBookProcessor(new HtmlSplitterBookStackProcessor("/Data/books/books_html"))
                 .addBookProcessor(new JsonSerializeBookStackProcessor(generatedFolder));
         for (File epub : epubs) {
             Stopwatch stopwatch = Stopwatch.createStarted();
 
             LOG.info("Parsing book: " + epub.getName());
             Book book = epubReader.readEpub(new FileInputStream(epub));
+            book.getMetadata().setTitles(Lists.newArrayList("Spring 5.0 Microservices, 2nd Edition"));
             BookStack bookStack = new BookStackInitializer(book).get();
 
             bookProcessor.processBook(bookStack);

@@ -1,0 +1,50 @@
+Problem Solving In Data Structures & Algorithms Using Java (1)
+Table of Contents (5)
+
+Chapter 0: How to use this book. (12)
+
+Chapter 1: Introduction - Programming Overview (18)
+
+Chapter 2: Algorithms Analysis (62)
+
+Chapter 3: Approach to solve algorithm design problems (81)
+
+Chapter 4: Abstract Data Type (92)
+
+Chapter 5: Searching (125)
+
+Chapter 6: Sorting (161)
+
+Chapter 7: Linked List (189)
+
+Chapter 8: Stack (236)
+
+Chapter 9: Queue (260)
+
+Chapter 10: Tree (273)
+
+Chapter 11: Priority Queue (319)
+
+Chapter 12: Hash-Table (346)
+
+Chapter 13: Graphs (365)
+
+Chapter 14: String Algorithms (391)
+
+Chapter 15: Algorithm Design Techniques (418)
+
+Chapter 16: Brute Force Algorithm (431)
+
+Chapter 17: Greedy Algorithm (439)
+
+Chapter 18: Divide & Conquer (450)
+
+Chapter 19: Dynamic Programming (465)
+
+Chapter 20: Backtracking (475)
+
+Chapter 21: Complexity Theory (479)
+
+Chapter 22: Interview Strategy (494)
+
+Chapter 23: System Design (499)

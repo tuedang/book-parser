@@ -16,5 +16,7 @@ public class PDFSplitterTOCText {
         BookStackTraversal.print(bookStack);
         Map<Integer, String> splitter = PDFSplitter.createSplitterMap(bookStack);
         PDFSplitter.splitPage(pdfPathFile, splitter, new File("/Data/books/books_pdf"));
+        String prefix="http://wiki.tdang.synology.me/ext/book_res/problem-solving-in-data-structures-algorithms-using-java/";
+        System.out.println(new PlainTextTocReader().toHtmlIndexPage(prefix, bookStack));
     }
 }

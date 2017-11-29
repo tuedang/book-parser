@@ -69,4 +69,9 @@ public class PDFSplitter {
             rangePages.remove(lastPageInMap);
         }
     }
+
+    public static String getFileName(int index, String title) {
+        String name = String.format("%02d_%s", index, title);
+        return AppStringUtils.slugify(name) + ".pdf";
+    }
 }
